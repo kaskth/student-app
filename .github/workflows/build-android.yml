@@ -29,6 +29,8 @@ jobs:
 
     - name: Build Quasar Web App
       run: npx quasar build
+      env:
+        VITE_API_URL: http://213.199.52.14:3055
 
     - name: Sync Capacitor
       run: npx cap sync android
