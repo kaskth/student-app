@@ -54,11 +54,14 @@ export default defineConfig((ctx) => {
 
       // publicPath: '/',
       // analyze: true,
-      // In production (APK), inject the server URL.
-      // In development, API_URL is undefined → axios falls back to window.location.hostname
-      env: ctx.prod ? {
-        API_URL: process.env.VITE_API_URL || 'http://213.199.52.14:3055'
-      } : {},
+      // API_URL is always explicitly set here:
+      // - dev:  http://localhost:3055  (your local backend)
+      // - prod: http://213.199.52.14:3055  (real server, embedded in APK)
+      env: {
+        API_URL: ctx.dev
+          ? 'http://localhost:3055'
+          : (process.env.VITE_API_URL || 'http://213.199.52.14:3055')
+      },
       // rawDefine: {}
       // ignorePublicFolder: true,
       // minify: false,
