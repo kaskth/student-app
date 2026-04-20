@@ -3,6 +3,7 @@
   "appName": "Mr. Mohamed El Gendy",
   "webDir": "dist/spa",
   "server": {
-    "cleartext": true
+    "cleartext": true,
+    "androidScheme": "http"
   }
 }
