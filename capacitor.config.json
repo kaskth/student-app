@@ -1,5 +1,8 @@
 {
   "appId": "com.englishplatform.student",
   "appName": "Mr. Mohamed El Gendy",
-  "webDir": "dist/spa"
+  "webDir": "dist/spa",
+  "server": {
+    "cleartext": true
+  }
 }
