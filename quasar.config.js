@@ -54,9 +54,11 @@ export default defineConfig((ctx) => {
 
       // publicPath: '/',
       // analyze: true,
-      env: {
+      // In production (APK), inject the server URL.
+      // In development, API_URL is undefined → axios falls back to window.location.hostname
+      env: ctx.prod ? {
         API_URL: process.env.VITE_API_URL || 'http://213.199.52.14:3055'
-      },
+      } : {},
       // rawDefine: {}
       // ignorePublicFolder: true,
       // minify: false,
