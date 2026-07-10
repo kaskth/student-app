@@ -14,6 +14,20 @@ body {
   overscroll-behavior: none;
 }
 
+/* Allow text selection in inputs and enable auto-direction (Arabic/English) */
+input, textarea, [contenteditable], .q-field__native {
+  -webkit-user-select: text;
+  user-select: text;
+  unicode-bidi: plaintext;
+  text-align: start !important;
+}
+
+/* Helper class for auto direction on normal text elements */
+.auto-dir {
+  unicode-bidi: plaintext;
+  text-align: start;
+}
+
 /* Safe Area Insets for Mobile */
 .safe-top {
   padding-top: max(env(safe-area-inset-top), 16px);

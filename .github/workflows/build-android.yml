@@ -1,48 +1,50 @@
 name: Build Android APK
 
 on:
-  push:
-    branches: [ "main", "master" ]
-  workflow_dispatch:
+  workflow_dispatch: # Allows manual trigger from the Actions tab
 
 jobs:
-  build:
+  build-android:
+    name: Build Android APK
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 20
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
 
-    - name: Setup Java
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: '21'
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
 
-    - name: Install Dependencies
-      run: npm install --legacy-peer-deps
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
 
-    - name: Build Quasar Web App
-      run: npx quasar build
-      env:
-        VITE_API_URL: http://213.199.52.14:3055
+      - name: Install NPM Dependencies
+        run: npm ci
 
-    - name: Sync Capacitor
-      run: npx cap sync android
+      - name: Build Quasar Web SPA
+        run: npm run build
 
-    - name: Build APK
-      working-directory: ./android
-      run: |
-        chmod +x ./gradlew
-        ./gradlew assembleDebug
+      - name: Sync Capacitor Android
+        run: npx cap sync android
 
-    - name: Upload APK
-      uses: actions/upload-artifact@v4
-      with:
-        name: student-app-apk
-        path: android/app/build/outputs/apk/debug/app-debug.apk
+      - name: Build Android Debug APK (Gradle)
+        run: |
+          chmod +x ./gradlew
+          ./gradlew assembleDebug
+        working-directory: ./android
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: student-app-debug-apk
+          path: ./android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 7
