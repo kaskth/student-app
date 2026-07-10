@@ -3,7 +3,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import routes from './routes'
 import { useStudentAuthStore } from 'src/stores/auth'
 
-export default route(function () {
+export default route(function ({ store }) {
   const router = createRouter({
     scrollBehavior: () => ({ left: 0, top: 0 }),
     routes,
@@ -11,7 +11,7 @@ export default route(function () {
   })
 
   router.beforeEach((to) => {
-    const auth = useStudentAuthStore()
+    const auth = useStudentAuthStore(store)
 
     // حماية الصفحات المحمية
     if (to.meta.requiresAuth && !auth.isLoggedIn) {
