@@ -15,5 +15,14 @@ onMounted(async () => {
       console.warn('PrivacyScreen not available', e)
     }
   }
+
+  document.addEventListener('touchend', (e) => {
+    const active = document.activeElement;
+    if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) {
+      if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+        active.blur();
+      }
+    }
+  }, { passive: false });
 })
 </script>
